@@ -203,10 +203,47 @@
                     </div>
 
                     <div id="hiponatremia" class="tab-content mt-6 active">
-                        <!-- Contenido Hiponatremia -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="peso-hipo" class="block text-sm font-medium text-gray-700">Peso (kg)</label>
+                                <input type="number" id="peso-hipo" class="mt-1 block w-full rounded-md input-field p-2" placeholder="Ej: 10">
+                            </div>
+                            <div>
+                                <label for="na-actual-hipo" class="block text-sm font-medium text-gray-700">Sodio Actual (mEq/L)</label>
+                                <input type="number" id="na-actual-hipo" class="mt-1 block w-full rounded-md input-field p-2" placeholder="Ej: 120">
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <label class="flex items-center">
+                                <input type="checkbox" id="sintomatico-hipo" class="rounded h-4 w-4 text-indigo-600 focus:ring-indigo-500">
+                                <span class="ml-2 text-sm text-gray-600">Sintomático (convulsiones)</span>
+                            </label>
+                        </div>
+                        <div class="mt-6"><button onclick="calcularHiponatremia()" class="w-full btn-primary font-bold py-2 px-4 rounded-lg">Calcular Corrección de Hiponatremia</button></div>
+                        <div id="resultado-hipo" class="mt-6 hidden">
+                            <h3 class="font-semibold text-lg mb-2">Plan de Corrección:</h3>
+                            <div id="resultado-hipo-content" class="result-card p-4 rounded-lg space-y-3"></div>
+                            <div id="detalles-hipo-content" class="mt-4"></div>
+                        </div>
                     </div>
+
                     <div id="hipernatremia" class="tab-content mt-6">
-                         <!-- Contenido Hipernatremia -->
+                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="peso-hiper" class="block text-sm font-medium text-gray-700">Peso (kg)</label>
+                                <input type="number" id="peso-hiper" class="mt-1 block w-full rounded-md input-field p-2" placeholder="Ej: 12">
+                            </div>
+                            <div>
+                                <label for="na-actual-hiper" class="block text-sm font-medium text-gray-700">Sodio Actual (mEq/L)</label>
+                                <input type="number" id="na-actual-hiper" class="mt-1 block w-full rounded-md input-field p-2" placeholder="Ej: 165">
+                            </div>
+                        </div>
+                        <div class="mt-6"><button onclick="calcularHipernatremia()" class="w-full btn-primary font-bold py-2 px-4 rounded-lg">Calcular Corrección de Hipernatremia</button></div>
+                        <div id="resultado-hiper" class="mt-6 hidden">
+                            <h3 class="font-semibold text-lg mb-2">Plan de Corrección:</h3>
+                            <div id="resultado-hiper-content" class="result-card p-4 rounded-lg space-y-3"></div>
+                            <div id="detalles-hiper-content" class="mt-4"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -683,3 +720,26 @@
     </script>
 </body>
 </html>
+
+Archivo 2: manifest.json
+{
+    "name": "Guía Pediátrica Notti",
+    "short_name": "Guía Notti",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#f0f4f8",
+    "theme_color": "#4f46e5",
+    "description": "Calculadora y guías de dosis y reposiciones para residentes de pediatría del Hospital Notti.",
+    "icons": [
+        {
+            "src": "https://placehold.co/192x192/4f46e5/ffffff?text=Notti",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "https://placehold.co/512x512/4f46e5/ffffff?text=Notti",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
