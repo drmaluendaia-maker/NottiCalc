@@ -6,7 +6,8 @@ const urlsToCache = [
     '/', // El archivo HTML principal (index.html)
     'manifest.json', // El archivo de manifiesto
     'https://cdn.tailwindcss.com',
-    'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'
+    'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
+    'https://unpkg.com/feather-icons'
 ];
 
 // Evento 'install': se dispara cuando el service worker se instala por primera vez.
