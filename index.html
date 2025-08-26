@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Pediátrica Notti</title>
+    <title>Guía Pediátrica Notti</title>
     
     <!-- Metadatos y enlaces para PWA -->
     <meta name="theme-color" content="#4f46e5"/>
@@ -35,7 +35,7 @@
             transform: translateY(-5px);
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
-        .calculator-card, .page {
+        .card, .page {
             background-color: white;
             border-radius: 1rem;
             box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
@@ -75,9 +75,9 @@
 </head>
 <body class="antialiased text-gray-800">
 
-    <div class="container mx-auto p-4 max-w-2xl">
+    <div class="container mx-auto p-4 max-w-3xl">
         <header class="text-center mb-6">
-            <h1 class="text-3xl font-bold text-gray-900">Calculadora Pediátrica Notti</h1>
+            <h1 class="text-3xl font-bold text-gray-900">Guía Pediátrica Notti</h1>
             <p class="text-gray-600 mt-1">Herramienta de cálculo y consulta para residentes.</p>
             <button id="install-button" class="mt-4 px-4 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600">Instalar Aplicación</button>
         </header>
@@ -85,44 +85,47 @@
         <main>
             <!-- Menú Principal -->
             <div id="main-menu" class="page active">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <button onclick="showPage('calculators-page')" class="main-menu-button bg-white p-6 rounded-xl shadow-md flex flex-col items-center justify-center text-center">
-                        <i data-feather="cpu" class="w-12 h-12 text-indigo-600 mb-3"></i>
-                        <h2 class="text-lg font-semibold">Calculadoras</h2>
-                        <p class="text-sm text-gray-500">Dosis, hidratación y más.</p>
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="showPage('calculators-page')" class="main-menu-button bg-white p-4 rounded-xl shadow-md flex flex-col items-center justify-center text-center">
+                        <i data-feather="cpu" class="w-10 h-10 text-indigo-600 mb-2"></i>
+                        <h2 class="text-md font-semibold">Calculadoras</h2>
                     </button>
-                    <button onclick="showPage('guides-page')" class="main-menu-button bg-white p-6 rounded-xl shadow-md flex flex-col items-center justify-center text-center">
-                        <i data-feather="book-open" class="w-12 h-12 text-indigo-600 mb-3"></i>
-                        <h2 class="text-lg font-semibold">Normas y Guías</h2>
-                        <p class="text-sm text-gray-500">Consulta por especialidad.</p>
+                    <button onclick="showPage('guides-page')" class="main-menu-button bg-white p-4 rounded-xl shadow-md flex flex-col items-center justify-center text-center">
+                        <i data-feather="book-open" class="w-10 h-10 text-green-600 mb-2"></i>
+                        <h2 class="text-md font-semibold">Normas y Guías</h2>
                     </button>
-                    <button onclick="showPage('downloads-page')" class="main-menu-button bg-white p-6 rounded-xl shadow-md flex flex-col items-center justify-center text-center col-span-1 md:col-span-2">
-                        <i data-feather="download-cloud" class="w-12 h-12 text-indigo-600 mb-3"></i>
-                        <h2 class="text-lg font-semibold">Descargas</h2>
-                        <p class="text-sm text-gray-500">PDFs de Normas completas.</p>
+                    <button onclick="showPage('vademecum-page')" class="main-menu-button bg-white p-4 rounded-xl shadow-md flex flex-col items-center justify-center text-center">
+                         <i data-feather="clipboard" class="w-10 h-10 text-yellow-600 mb-2"></i>
+                        <h2 class="text-md font-semibold">Vademécum</h2>
+                    </button>
+                    <button onclick="showPage('urgencias-page')" class="main-menu-button bg-white p-4 rounded-xl shadow-md flex flex-col items-center justify-center text-center">
+                        <i data-feather="alert-triangle" class="w-10 h-10 text-red-600 mb-2"></i>
+                        <h2 class="text-md font-semibold">Urgencias</h2>
+                    </button>
+                     <button onclick="showPage('texts-page')" class="main-menu-button bg-white p-4 rounded-xl shadow-md flex flex-col items-center justify-center text-center">
+                        <i data-feather="file-text" class="w-10 h-10 text-purple-600 mb-2"></i>
+                        <h2 class="text-md font-semibold">Textos de Interés</h2>
+                    </button>
+                    <button onclick="showPage('downloads-page')" class="main-menu-button bg-white p-4 rounded-xl shadow-md flex flex-col items-center justify-center text-center">
+                        <i data-feather="download-cloud" class="w-10 h-10 text-blue-600 mb-2"></i>
+                        <h2 class="text-md font-semibold">Descargas</h2>
                     </button>
                 </div>
             </div>
 
             <!-- Página de Calculadoras -->
             <div id="calculators-page" class="page">
-                <button onclick="showPage('main-menu')" class="btn-secondary mb-4 px-4 py-2 rounded-lg flex items-center">
-                    <i data-feather="arrow-left" class="w-4 h-4 mr-2"></i> Volver al Menú
-                </button>
+                <button onclick="showPage('main-menu')" class="btn-secondary mb-4 px-4 py-2 rounded-lg flex items-center"><i data-feather="arrow-left" class="w-4 h-4 mr-2"></i> Volver</button>
                 <div class="space-y-4">
                      <button onclick="showPage('php-calculator-page')" class="w-full text-left bg-indigo-50 p-4 rounded-lg hover:bg-indigo-100 transition">Plan de Hidratación Parenteral (PHP)</button>
                      <button class="w-full text-left bg-gray-100 p-4 rounded-lg cursor-not-allowed opacity-50">Corrección de Disnatremias (Próximamente)</button>
-                     <button class="w-full text-left bg-gray-100 p-4 rounded-lg cursor-not-allowed opacity-50">Corrección de Trastornos Ácido-Base (Próximamente)</button>
-                     <button class="w-full text-left bg-gray-100 p-4 rounded-lg cursor-not-allowed opacity-50">Corrección Rápida de Potasio (Próximamente)</button>
                 </div>
             </div>
             
             <!-- Página de la Calculadora PHP -->
             <div id="php-calculator-page" class="page">
-                 <button onclick="showPage('calculators-page')" class="btn-secondary mb-4 px-4 py-2 rounded-lg flex items-center">
-                    <i data-feather="arrow-left" class="w-4 h-4 mr-2"></i> Volver a Calculadoras
-                </button>
-                <div class="calculator-card p-6">
+                 <button onclick="showPage('calculators-page')" class="btn-secondary mb-4 px-4 py-2 rounded-lg flex items-center"><i data-feather="arrow-left" class="w-4 h-4 mr-2"></i> Volver</button>
+                <div class="card p-6">
                     <h2 class="text-xl font-semibold mb-4 border-b pb-2">Plan de Hidratación Parenteral (PHP)</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
@@ -134,9 +137,7 @@
                             <input type="number" id="deshidratacion" class="mt-1 block w-full rounded-md input-field p-2" placeholder="Ej: 8">
                         </div>
                     </div>
-                    <div class="mt-6">
-                        <button onclick="calcularPHP()" class="w-full btn-primary font-bold py-2 px-4 rounded-lg">Calcular Plan</button>
-                    </div>
+                    <div class="mt-6"><button onclick="calcularPHP()" class="w-full btn-primary font-bold py-2 px-4 rounded-lg">Calcular Plan</button></div>
                     <div id="resultado-php" class="mt-6 hidden">
                         <h3 class="font-semibold text-lg mb-2">Resultados del Plan para 24h:</h3>
                         <div class="result-card p-4 rounded-lg space-y-3">
@@ -159,39 +160,70 @@
 
             <!-- Página de Normas y Guías -->
             <div id="guides-page" class="page">
-                <button onclick="showPage('main-menu')" class="btn-secondary mb-4 px-4 py-2 rounded-lg flex items-center">
-                     <i data-feather="arrow-left" class="w-4 h-4 mr-2"></i> Volver al Menú
-                </button>
-                <div class="space-y-2">
-                    <div class="bg-gray-100 p-3 rounded-lg">Infectología</div>
-                    <div class="bg-gray-100 p-3 rounded-lg">Neumonología</div>
-                    <div class="bg-gray-100 p-3 rounded-lg">Neurología</div>
-                    <div class="bg-gray-100 p-3 rounded-lg">Nefrología</div>
-                    <div class="bg-gray-100 p-3 rounded-lg">Endocrinología</div>
-                    <div class="bg-gray-100 p-3 rounded-lg">Hematología y Oncología</div>
-                    <div class="bg-gray-100 p-3 rounded-lg">Gastroenterología</div>
-                    <div class="bg-gray-100 p-3 rounded-lg">Cardiología</div>
-                    <div class="bg-gray-100 p-3 rounded-lg">Inmunología</div>
-                    <div class="bg-gray-100 p-3 rounded-lg">Cirugía</div>
-                    <div class="bg-gray-100 p-3 rounded-lg">Intoxicaciones</div>
-                    <div class="bg-gray-100 p-3 rounded-lg">Neonatología</div>
+                <button onclick="showPage('main-menu')" class="btn-secondary mb-4 px-4 py-2 rounded-lg flex items-center"><i data-feather="arrow-left" class="w-4 h-4 mr-2"></i> Volver</button>
+                <div class="space-y-2"><div class="bg-gray-100 p-3 rounded-lg">Próximamente...</div></div>
+            </div>
+
+            <!-- Página de Vademécum -->
+            <div id="vademecum-page" class="page">
+                <button onclick="showPage('main-menu')" class="btn-secondary mb-4 px-4 py-2 rounded-lg flex items-center"><i data-feather="arrow-left" class="w-4 h-4 mr-2"></i> Volver</button>
+                <div class="card p-6 space-y-4">
+                    <h2 class="text-xl font-semibold border-b pb-2">Vademécum (H. Garrahan)</h2>
+                    <a href="https://farmacia.garrahan.gov.ar/Vademecum/Busqueda" target="_blank" rel="noopener noreferrer" class="block w-full text-left bg-yellow-50 p-4 rounded-lg hover:bg-yellow-100 transition flex items-center"><i data-feather="search" class="w-5 h-5 mr-3 text-yellow-700"></i>Búsqueda General</a>
+                    <a href="https://farmacia.garrahan.gov.ar/Vademecum/BusquedaGrupoTerapeutico" target="_blank" rel="noopener noreferrer" class="block w-full text-left bg-yellow-50 p-4 rounded-lg hover:bg-yellow-100 transition flex items-center"><i data-feather="list" class="w-5 h-5 mr-3 text-yellow-700"></i>Índice por Grupo Terapéutico</a>
+                    <a href="https://www.garrahan.gov.ar/PDFS/medicamentos/tablas/aca.pdf" target="_blank" rel="noopener noreferrer" class="block w-full text-left bg-yellow-50 p-4 rounded-lg hover:bg-yellow-100 transition flex items-center"><i data-feather="file-text" class="w-5 h-5 mr-3 text-yellow-700"></i>Medicamentos para Celíacos</a>
+                </div>
+            </div>
+
+            <!-- Página de Urgencias -->
+             <div id="urgencias-page" class="page">
+                <button onclick="showPage('main-menu')" class="btn-secondary mb-4 px-4 py-2 rounded-lg flex items-center"><i data-feather="arrow-left" class="w-4 h-4 mr-2"></i> Volver</button>
+                <div class="card p-6 space-y-4">
+                    <h2 class="text-xl font-semibold border-b pb-2">Drogas en Urgencias Pediátricas</h2>
+                    <a href="https://www.garrahan.gov.ar/PDFS/medicamentos/cards/instructivo_para_el_uso_tablas.pdf" target="_blank" rel="noopener noreferrer" class="block w-full text-left bg-red-50 p-4 rounded-lg hover:bg-red-100 transition flex items-center"><i data-feather="help-circle" class="w-5 h-5 mr-3 text-red-700"></i>Instructivo de Uso</a>
+                    <a href="https://www.garrahan.gov.ar/PDFS/medicamentos/cards/anexo.pdf" target="_blank" rel="noopener noreferrer" class="block w-full text-left bg-red-50 p-4 rounded-lg hover:bg-red-100 transition flex items-center"><i data-feather="paperclip" class="w-5 h-5 mr-3 text-red-700"></i>Anexo I: Preparación</a>
+                    <h3 class="font-semibold pt-4">Tablas por Peso:</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 text-center">
+                        <a href="https://www.garrahan.gov.ar/PDFS/medicamentos/cards/5_kg.pdf" target="_blank" rel="noopener noreferrer" class="bg-gray-100 p-2 rounded hover:bg-gray-200">5 kg</a>
+                        <a href="https://www.garrahan.gov.ar/PDFS/medicamentos/cards/6_kg.pdf" target="_blank" rel="noopener noreferrer" class="bg-gray-100 p-2 rounded hover:bg-gray-200">6 kg</a>
+                        <a href="https://www.garrahan.gov.ar/PDFS/medicamentos/cards/7_kg.pdf" target="_blank" rel="noopener noreferrer" class="bg-gray-100 p-2 rounded hover:bg-gray-200">7 kg</a>
+                        <a href="https://www.garrahan.gov.ar/PDFS/medicamentos/cards/8_kg.pdf" target="_blank" rel="noopener noreferrer" class="bg-gray-100 p-2 rounded hover:bg-gray-200">8 kg</a>
+                        <a href="https://www.garrahan.gov.ar/PDFS/medicamentos/cards/9_kg.pdf" target="_blank" rel="noopener noreferrer" class="bg-gray-100 p-2 rounded hover:bg-gray-200">9 kg</a>
+                        <a href="https://www.garrahan.gov.ar/PDFS/medicamentos/cards/10_kg.pdf" target="_blank" rel="noopener noreferrer" class="bg-gray-100 p-2 rounded hover:bg-gray-200">10 kg</a>
+                        <a href="https://www.garrahan.gov.ar/PDFS/medicamentos/cards/12_kg.pdf" target="_blank" rel="noopener noreferrer" class="bg-gray-100 p-2 rounded hover:bg-gray-200">12 kg</a>
+                        <a href="https://www.garrahan.gov.ar/PDFS/medicamentos/cards/14_kg.pdf" target="_blank" rel="noopener noreferrer" class="bg-gray-100 p-2 rounded hover:bg-gray-200">14 kg</a>
+                        <a href="https://www.garrahan.gov.ar/PDFS/medicamentos/cards/16_kg.pdf" target="_blank" rel="noopener noreferrer" class="bg-gray-100 p-2 rounded hover:bg-gray-200">16 kg</a>
+                        <a href="https://www.garrahan.gov.ar/PDFS/medicamentos/cards/18_kg.pdf" target="_blank" rel="noopener noreferrer" class="bg-gray-100 p-2 rounded hover:bg-gray-200">18 kg</a>
+                        <a href="https://www.garrahan.gov.ar/PDFS/medicamentos/cards/20_kg.pdf" target="_blank" rel="noopener noreferrer" class="bg-gray-100 p-2 rounded hover:bg-gray-200">20 kg</a>
+                        <a href="https://www.garrahan.gov.ar/PDFS/medicamentos/cards/25_kg.pdf" target="_blank" rel="noopener noreferrer" class="bg-gray-100 p-2 rounded hover:bg-gray-200">25 kg</a>
+                        <a href="https://www.garrahan.gov.ar/PDFS/medicamentos/cards/30_kg.pdf" target="_blank" rel="noopener noreferrer" class="bg-gray-100 p-2 rounded hover:bg-gray-200">30 kg</a>
+                        <a href="https://www.garrahan.gov.ar/PDFS/medicamentos/cards/35_kg.pdf" target="_blank" rel="noopener noreferrer" class="bg-gray-100 p-2 rounded hover:bg-gray-200">35 kg</a>
+                        <a href="https://www.garrahan.gov.ar/PDFS/medicamentos/cards/40_kg.pdf" target="_blank" rel="noopener noreferrer" class="bg-gray-100 p-2 rounded hover:bg-gray-200">40 kg</a>
+                        <a href="https://www.garrahan.gov.ar/PDFS/medicamentos/cards/50_kg.pdf" target="_blank" rel="noopener noreferrer" class="bg-gray-100 p-2 rounded hover:bg-gray-200">50 kg</a>
+                        <a href="https://www.garrahan.gov.ar/PDFS/medicamentos/cards/60_kg.pdf" target="_blank" rel="noopener noreferrer" class="bg-gray-100 p-2 rounded hover:bg-gray-200">60 kg</a>
+                    </div>
+                </div>
+            </div>
+
+             <!-- Página de Textos de Interés -->
+            <div id="texts-page" class="page">
+                <button onclick="showPage('main-menu')" class="btn-secondary mb-4 px-4 py-2 rounded-lg flex items-center"><i data-feather="arrow-left" class="w-4 h-4 mr-2"></i> Volver</button>
+                <div class="card p-6">
+                    <h2 class="text-xl font-semibold border-b pb-2">Textos de Interés</h2>
+                    <p class="text-gray-500 mt-4">Esta sección se encuentra en desarrollo. Próximamente se añadirán documentos y enlaces de interés.</p>
+                    <!-- Para agregar un nuevo texto, copia y pega esta línea y modifica el href y el texto: -->
+                    <!-- <a href="URL_DEL_DOCUMENTO" target="_blank" rel="noopener noreferrer" class="block w-full text-left bg-purple-50 p-4 rounded-lg hover:bg-purple-100 transition flex items-center"><i data-feather="file" class="w-5 h-5 mr-3 text-purple-700"></i><span>Nombre del Documento</span></a> -->
                 </div>
             </div>
 
             <!-- Página de Descargas -->
             <div id="downloads-page" class="page">
-                 <button onclick="showPage('main-menu')" class="btn-secondary mb-4 px-4 py-2 rounded-lg flex items-center">
-                    <i data-feather="arrow-left" class="w-4 h-4 mr-2"></i> Volver al Menú
-                </button>
-                <div class="space-y-4">
-                    <a href="Normas Residente 2022.pdf" download class="block w-full text-left bg-blue-50 p-4 rounded-lg hover:bg-blue-100 transition flex items-center">
-                        <i data-feather="file-text" class="w-5 h-5 mr-3 text-blue-600"></i>
-                        <span>Normas de Residencia 2022.pdf</span>
-                    </a>
-                    <a href="normas 2024 by aime y juli-1.pdf" download class="block w-full text-left bg-blue-50 p-4 rounded-lg hover:bg-blue-100 transition flex items-center">
-                        <i data-feather="file-text" class="w-5 h-5 mr-3 text-blue-600"></i>
-                        <span>Normas de Residencia 2024.pdf</span>
-                    </a>
+                 <button onclick="showPage('main-menu')" class="btn-secondary mb-4 px-4 py-2 rounded-lg flex items-center"><i data-feather="arrow-left" class="w-4 h-4 mr-2"></i> Volver</button>
+                <div class="card p-6 space-y-4">
+                    <h2 class="text-xl font-semibold border-b pb-2">Normas de Residencia</h2>
+                    <a href="https://drive.google.com/file/d/1PbrHaiKNjaVqYuyQmkdBynQYuQsKobRP/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="block w-full text-left bg-blue-50 p-4 rounded-lg hover:bg-blue-100 transition flex items-center"><i data-feather="external-link" class="w-5 h-5 mr-3 text-blue-600"></i><span>Normas 2024.pdf</span></a>
+                    <a href="https://drive.google.com/file/d/12UMDYyphx-IvpD1Z6mjoU-wi_0x35DVT/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="block w-full text-left bg-blue-50 p-4 rounded-lg hover:bg-blue-100 transition flex items-center"><i data-feather="external-link" class="w-5 h-5 mr-3 text-blue-600"></i><span>Normas 2022.pdf</span></a>
+                    <div class="block w-full text-left bg-gray-100 p-4 rounded-lg opacity-60 flex items-center"><i data-feather="clock" class="w-5 h-5 mr-3 text-gray-500"></i><span>Normas 2025 (En proceso...)</span></div>
                 </div>
             </div>
         </main>
@@ -199,11 +231,7 @@
 
     <script>
         // --- Lógica de Navegación y Aplicación ---
-        
-        // Inicializar iconos
         feather.replace();
-
-        // 1. REGISTRO DEL SERVICE WORKER
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./service-worker.js')
@@ -211,53 +239,32 @@
                     .catch(err => console.log('Fallo en el registro de ServiceWorker:', err));
             });
         }
-
-        // 2. LÓGICA DE NAVEGACIÓN ENTRE PÁGINAS
         function showPage(pageId) {
-            // Ocultar todas las páginas
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.remove('active');
-            });
-            // Mostrar la página solicitada
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
             const pageToShow = document.getElementById(pageId);
-            if (pageToShow) {
-                pageToShow.classList.add('active');
-            }
+            if (pageToShow) pageToShow.classList.add('active');
         }
-
-        // 3. LÓGICA DE LA CALCULADORA PHP
         function calcularPHP() {
             const peso = parseFloat(document.getElementById('peso').value);
             const deshidratacion = parseFloat(document.getElementById('deshidratacion').value);
-
             if (isNaN(peso) || peso <= 0 || isNaN(deshidratacion) || deshidratacion < 0) {
-                // Usar un modal o un mensaje en la UI en lugar de alert()
                 console.error('Valores inválidos');
                 return;
             }
-
-            // Holliday-Segar
             let nb;
             if (peso <= 10) { nb = peso * 100; } 
             else if (peso <= 20) { nb = 1000 + (peso - 10) * 50; } 
             else { nb = 1500 + (peso - 20) * 20; }
-
             const dp = peso * deshidratacion * 10;
             const vt = nb + dp;
             const goteo = vt / 24;
             const macrogoteo = (goteo * 20) / 60;
-
-            // Composición (Na 140 mEq/L, K 20 mEq/L)
             const naRequeridoPorLitro = 140;
             const kRequeridoPorLitro = 20;
             const mlNaCl500 = (naRequeridoPorLitro / 3.4) / 2;
             const mlKCl500 = (kRequeridoPorLitro / 1) / 2;
-
-            // Flujos de seguridad
             const flujoGlucosa = (goteo * 50) / (peso * 60);
             const flujoPotasio = (goteo * (kRequeridoPorLitro / 1000)) / peso;
-
-            // Mostrar resultados
             document.getElementById('nb-result').textContent = nb.toFixed(0);
             document.getElementById('dp-result').textContent = dp.toFixed(0);
             document.getElementById('vt-result').textContent = vt.toFixed(0);
@@ -269,11 +276,8 @@
             document.getElementById('flujo-potasio').textContent = flujoPotasio.toFixed(2);
             document.getElementById('resultado-php').classList.remove('hidden');
         }
-        
-        // 4. LÓGICA DEL BOTÓN DE INSTALACIÓN
         let deferredPrompt;
         const installButton = document.getElementById('install-button');
-
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
