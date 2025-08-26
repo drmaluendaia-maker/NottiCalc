@@ -1,10 +1,12 @@
 // Nombre del caché para nuestra aplicación
-const CACHE_NAME = 'notti-calc-v1';
+const CACHE_NAME = 'notti-calc-v2'; // Incrementamos la versión del caché
 
 // Lista de archivos esenciales para que la app funcione offline
 const urlsToCache = [
     '/', // El archivo HTML principal (index.html)
     'manifest.json', // El archivo de manifiesto
+    'Normas Residente 2022.pdf', // PDF de Normas 2022
+    'normas 2024 by aime y juli-1.pdf', // PDF de Normas 2024
     'https://cdn.tailwindcss.com',
     'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
     'https://unpkg.com/feather-icons'
@@ -21,6 +23,22 @@ self.addEventListener('install', event => {
             })
     );
 });
+
+// Evento 'activate': Limpia cachés antiguos
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.filter(cacheName => {
+          return cacheName.startsWith('notti-calc-') && cacheName !== CACHE_NAME;
+        }).map(cacheName => {
+          return caches.delete(cacheName);
+        })
+      );
+    })
+  );
+});
+
 
 // Evento 'fetch': se dispara cada vez que la app intenta acceder a un recurso (una página, un script, etc.)
 self.addEventListener('fetch', event => {
