@@ -1,12 +1,12 @@
 // Nombre del caché para nuestra aplicación
-const CACHE_NAME = 'notti-calc-v2'; // Incrementamos la versión del caché
+const CACHE_NAME = 'notti-calc-v4'; // Incrementamos la versión del caché
 
 // Lista de archivos esenciales para que la app funcione offline
+// IMPORTANTE: Los PDFs no se incluyen aquí para no exceder los límites de tamaño de GitHub.
+// Solo la estructura de la app funcionará offline. Los PDFs y enlaces externos requerirán conexión.
 const urlsToCache = [
     '/', // El archivo HTML principal (index.html)
     'manifest.json', // El archivo de manifiesto
-    'Normas Residente 2022.pdf', // PDF de Normas 2022
-    'normas 2024 by aime y juli-1.pdf', // PDF de Normas 2024
     'https://cdn.tailwindcss.com',
     'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
     'https://unpkg.com/feather-icons'
@@ -24,7 +24,7 @@ self.addEventListener('install', event => {
     );
 });
 
-// Evento 'activate': Limpia cachés antiguos
+// Evento 'activate': Limpia cachés antiguos para asegurar que la nueva versión funcione
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(cacheNames => {
@@ -42,8 +42,8 @@ self.addEventListener('activate', event => {
 
 // Evento 'fetch': se dispara cada vez que la app intenta acceder a un recurso (una página, un script, etc.)
 self.addEventListener('fetch', event => {
+    // Estrategia: Cache first, then network
     event.respondWith(
-        // Buscamos si el recurso solicitado ya está en el caché
         caches.match(event.request)
             .then(response => {
                 // Si encontramos el recurso en el caché, lo devolvemos.
