@@ -1,9 +1,7 @@
 // Nombre del caché para nuestra aplicación
-const CACHE_NAME = 'notti-calc-v4'; // Incrementamos la versión del caché
+const CACHE_NAME = 'notti-calc-v5'; // Incrementamos la versión del caché
 
 // Lista de archivos esenciales para que la app funcione offline
-// IMPORTANTE: Los PDFs no se incluyen aquí para no exceder los límites de tamaño de GitHub.
-// Solo la estructura de la app funcionará offline. Los PDFs y enlaces externos requerirán conexión.
 const urlsToCache = [
     '/', // El archivo HTML principal (index.html)
     'manifest.json', // El archivo de manifiesto
@@ -14,7 +12,6 @@ const urlsToCache = [
 
 // Evento 'install': se dispara cuando el service worker se instala por primera vez.
 self.addEventListener('install', event => {
-    // Esperamos a que la promesa de abrir el caché y agregar los archivos se complete
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(cache => {
@@ -40,7 +37,7 @@ self.addEventListener('activate', event => {
 });
 
 
-// Evento 'fetch': se dispara cada vez que la app intenta acceder a un recurso (una página, un script, etc.)
+// Evento 'fetch': se dispara cada vez que la app intenta acceder a un recurso
 self.addEventListener('fetch', event => {
     // Estrategia: Cache first, then network
     event.respondWith(
