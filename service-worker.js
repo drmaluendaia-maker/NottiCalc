@@ -1,5 +1,5 @@
 // Nombre del caché para nuestra aplicación
-const CACHE_NAME = 'notti-calc-v9'; // Incrementamos la versión del caché
+const CACHE_NAME = 'notti-calc-v10'; // Incrementamos la versión del caché
 
 // Lista de archivos esenciales para que la app funcione offline
 const urlsToCache = [
