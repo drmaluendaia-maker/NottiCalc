@@ -1,11 +1,11 @@
 {
-    "name": "Calculadora Pediátrica Notti",
-    "short_name": "NottiCalc",
+    "name": "Guía Pediátrica Notti",
+    "short_name": "Guía Notti",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#f0f4f8",
     "theme_color": "#4f46e5",
-    "description": "Calculadora de dosis y reposiciones para residentes de pediatría del Hospital Notti.",
+    "description": "Calculadora y guías de dosis y reposiciones para residentes de pediatría del Hospital Notti.",
     "icons": [
         {
             "src": "https://placehold.co/192x192/4f46e5/ffffff?text=Notti",
