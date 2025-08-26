@@ -71,6 +71,19 @@
         .page.active {
             display: block; /* Mostrar página activa */
         }
+        .tab-button {
+            border-bottom: 2px solid transparent;
+        }
+        .tab-button.active {
+            border-color: #4f46e5;
+            color: #4f46e5;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
     </style>
 </head>
 <body class="antialiased text-gray-800">
@@ -122,7 +135,7 @@
                 <button onclick="showPage('main-menu')" class="btn-secondary mb-4 px-4 py-2 rounded-lg flex items-center"><i data-feather="arrow-left" class="w-4 h-4 mr-2"></i> Volver</button>
                 <div class="space-y-4">
                      <button onclick="showPage('php-calculator-page')" class="w-full text-left bg-indigo-50 p-4 rounded-lg hover:bg-indigo-100 transition">Plan de Hidratación Parenteral (PHP)</button>
-                     <button class="w-full text-left bg-gray-100 p-4 rounded-lg cursor-not-allowed opacity-50">Corrección de Disnatremias (Próximamente)</button>
+                     <button onclick="showPage('disnatremias-calculator-page')" class="w-full text-left bg-indigo-50 p-4 rounded-lg hover:bg-indigo-100 transition">Corrección de Disnatremias</button>
                 </div>
             </div>
             
@@ -133,12 +146,12 @@
                     <h2 class="text-xl font-semibold mb-4 border-b pb-2">Plan de Hidratación Parenteral (PHP)</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label for="peso" class="block text-sm font-medium text-gray-700">Peso del paciente (kg)</label>
-                            <input type="number" id="peso" class="mt-1 block w-full rounded-md input-field p-2" placeholder="Ej: 15">
+                            <label for="peso-php" class="block text-sm font-medium text-gray-700">Peso del paciente (kg)</label>
+                            <input type="number" id="peso-php" class="mt-1 block w-full rounded-md input-field p-2" placeholder="Ej: 15">
                         </div>
                         <div>
-                            <label for="deshidratacion" class="block text-sm font-medium text-gray-700">% de Deshidratación</label>
-                            <input type="number" id="deshidratacion" class="mt-1 block w-full rounded-md input-field p-2" placeholder="Ej: 8">
+                            <label for="deshidratacion-php" class="block text-sm font-medium text-gray-700">% de Deshidratación</label>
+                            <input type="number" id="deshidratacion-php" class="mt-1 block w-full rounded-md input-field p-2" placeholder="Ej: 8">
                         </div>
                     </div>
                     <div class="mt-6"><button onclick="calcularPHP()" class="w-full btn-primary font-bold py-2 px-4 rounded-lg">Calcular Plan</button></div>
@@ -157,6 +170,65 @@
                             <h4 class="font-semibold">Flujos de Seguridad:</h4>
                             <p><strong>Flujo de Glucosa:</strong> <span id="flujo-glucosa" class="font-mono"></span> mg/kg/min</p>
                             <p><strong>Flujo de Potasio:</strong> <span id="flujo-potasio" class="font-mono"></span> mEq/kg/hora</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Página de la Calculadora de Disnatremias -->
+            <div id="disnatremias-calculator-page" class="page">
+                <button onclick="showPage('calculators-page')" class="btn-secondary mb-4 px-4 py-2 rounded-lg flex items-center"><i data-feather="arrow-left" class="w-4 h-4 mr-2"></i> Volver</button>
+                <div class="card p-6">
+                    <h2 class="text-xl font-semibold mb-4 border-b pb-2">Corrección de Disnatremias</h2>
+                    <!-- Tabs para Hipo/Hipernatremia -->
+                    <div class="border-b border-gray-200">
+                        <nav class="-mb-px flex space-x-6" aria-label="Tabs">
+                            <button onclick="openTab(event, 'hiponatremia')" id="hipo-tab-button" class="tab-button whitespace-nowrap py-3 px-1 font-medium text-sm active">Hiponatremia</button>
+                            <button onclick="openTab(event, 'hipernatremia')" class="tab-button whitespace-nowrap py-3 px-1 font-medium text-sm">Hipernatremia</button>
+                        </nav>
+                    </div>
+
+                    <!-- Contenido Hiponatremia -->
+                    <div id="hiponatremia" class="tab-content mt-6 active">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="peso-hipo" class="block text-sm font-medium text-gray-700">Peso (kg)</label>
+                                <input type="number" id="peso-hipo" class="mt-1 block w-full rounded-md input-field p-2" placeholder="Ej: 10">
+                            </div>
+                            <div>
+                                <label for="na-actual-hipo" class="block text-sm font-medium text-gray-700">Sodio Actual (mEq/L)</label>
+                                <input type="number" id="na-actual-hipo" class="mt-1 block w-full rounded-md input-field p-2" placeholder="Ej: 120">
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <label class="flex items-center">
+                                <input type="checkbox" id="sintomatico-hipo" class="rounded h-4 w-4 text-indigo-600 focus:ring-indigo-500">
+                                <span class="ml-2 text-sm text-gray-600">Sintomático (convulsiones)</span>
+                            </label>
+                        </div>
+                        <div class="mt-6"><button onclick="calcularHiponatremia()" class="w-full btn-primary font-bold py-2 px-4 rounded-lg">Calcular Corrección de Hiponatremia</button></div>
+                        <div id="resultado-hipo" class="mt-6 hidden">
+                            <h3 class="font-semibold text-lg mb-2">Plan de Corrección:</h3>
+                            <div id="resultado-hipo-content" class="result-card p-4 rounded-lg space-y-3"></div>
+                        </div>
+                    </div>
+
+                    <!-- Contenido Hipernatremia -->
+                    <div id="hipernatremia" class="tab-content mt-6">
+                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="peso-hiper" class="block text-sm font-medium text-gray-700">Peso (kg)</label>
+                                <input type="number" id="peso-hiper" class="mt-1 block w-full rounded-md input-field p-2" placeholder="Ej: 12">
+                            </div>
+                            <div>
+                                <label for="na-actual-hiper" class="block text-sm font-medium text-gray-700">Sodio Actual (mEq/L)</label>
+                                <input type="number" id="na-actual-hiper" class="mt-1 block w-full rounded-md input-field p-2" placeholder="Ej: 165">
+                            </div>
+                        </div>
+                        <div class="mt-6"><button onclick="calcularHipernatremia()" class="w-full btn-primary font-bold py-2 px-4 rounded-lg">Calcular Corrección de Hipernatremia</button></div>
+                        <div id="resultado-hiper" class="mt-6 hidden">
+                            <h3 class="font-semibold text-lg mb-2">Plan de Corrección:</h3>
+                            <div id="resultado-hiper-content" class="result-card p-4 rounded-lg space-y-3"></div>
                         </div>
                     </div>
                 </div>
@@ -262,13 +334,13 @@
             const pageToShow = document.getElementById(pageId);
             if (pageToShow) pageToShow.classList.add('active');
         }
+        
+        // --- Lógica de Calculadoras ---
+
         function calcularPHP() {
-            const peso = parseFloat(document.getElementById('peso').value);
-            const deshidratacion = parseFloat(document.getElementById('deshidratacion').value);
-            if (isNaN(peso) || peso <= 0 || isNaN(deshidratacion) || deshidratacion < 0) {
-                console.error('Valores inválidos');
-                return;
-            }
+            const peso = parseFloat(document.getElementById('peso-php').value);
+            const deshidratacion = parseFloat(document.getElementById('deshidratacion-php').value);
+            if (isNaN(peso) || peso <= 0 || isNaN(deshidratacion) || deshidratacion < 0) return;
             let nb;
             if (peso <= 10) { nb = peso * 100; } 
             else if (peso <= 20) { nb = 1000 + (peso - 10) * 50; } 
@@ -294,6 +366,102 @@
             document.getElementById('flujo-potasio').textContent = flujoPotasio.toFixed(2);
             document.getElementById('resultado-php').classList.remove('hidden');
         }
+
+        function openTab(evt, tabName) {
+            document.querySelectorAll('.tab-content').forEach(tc => tc.style.display = "none");
+            document.querySelectorAll('.tab-button').forEach(tb => tb.classList.remove('active'));
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.classList.add('active');
+        }
+
+        function calcularHiponatremia() {
+            const peso = parseFloat(document.getElementById('peso-hipo').value);
+            const naActual = parseFloat(document.getElementById('na-actual-hipo').value);
+            const esSintomatico = document.getElementById('sintomatico-hipo').checked;
+            const resultadoDiv = document.getElementById('resultado-hipo-content');
+            
+            if (isNaN(peso) || peso <= 0 || isNaN(naActual) || naActual >= 135) {
+                resultadoDiv.innerHTML = `<p class="text-red-600">Por favor, ingrese un peso válido y un sodio actual menor a 135 mEq/L.</p>`;
+                document.getElementById('resultado-hipo').classList.remove('hidden');
+                return;
+            }
+
+            let htmlResult = '';
+            if (esSintomatico) {
+                const meqSodio = 2 * peso; // 1.5 a 2.5 mEq/kg -> usamos 2
+                const volClNa3 = meqSodio / 0.51; // 0.51 mEq/ml en ClNa 3%
+                htmlResult = `
+                    <h4 class="font-semibold text-red-700">Corrección Rápida (Sintomático)</h4>
+                    <p>Administrar un bolo de <strong class="font-mono">${volClNa3.toFixed(1)} ml</strong> de Cloruro de Sodio al 3%.</p>
+                    <p class="text-sm text-gray-600">Esto aportará ${meqSodio.toFixed(1)} mEq de Sodio (2 mEq/kg).</p>
+                    <p class="text-sm text-gray-600">Pasar en 20-30 minutos y reevaluar.</p>
+                `;
+            } else {
+                const naDeseado = 125;
+                const deficit = 0.6 * peso * (naDeseado - naActual);
+                if (deficit <= 0) {
+                     htmlResult = `<p>El sodio actual está por encima del objetivo de corrección inicial (125 mEq/L). No se requiere corrección de déficit.</p>`;
+                } else {
+                    const volClNa3 = deficit / 0.51;
+                    const ritmoMaximo = 8; // mEq/L en 24h
+                    const aumentoNecesario = naDeseado - naActual;
+                    const horasInfusion = (aumentoNecesario / ritmoMaximo) * 24;
+                    const goteo = volClNa3 / horasInfusion;
+
+                    htmlResult = `
+                        <h4 class="font-semibold">Corrección Lenta (Asintomático)</h4>
+                        <p><strong>Déficit de Sodio a corregir (hasta 125 mEq/L):</strong> <span class="font-mono">${deficit.toFixed(1)} mEq</span></p>
+                        <p><strong>Volumen de ClNa 3% a infundir:</strong> <span class="font-mono">${volClNa3.toFixed(1)} ml</span></p>
+                        <p><strong>Tiempo de infusión sugerido:</strong> <span class="font-mono">${horasInfusion.toFixed(0)} horas</span></p>
+                        <p><strong>Goteo:</strong> <span class="font-mono">${goteo.toFixed(1)} ml/h</span></p>
+                        <p class="text-sm text-gray-600">Este plan aumenta el sodio a un ritmo seguro (~0.33 mEq/L/h), no superando los 8 mEq/L en 24h.</p>
+                    `;
+                }
+            }
+            resultadoDiv.innerHTML = htmlResult;
+            document.getElementById('resultado-hipo').classList.remove('hidden');
+        }
+
+        function calcularHipernatremia() {
+            const peso = parseFloat(document.getElementById('peso-hiper').value);
+            const naActual = parseFloat(document.getElementById('na-actual-hiper').value);
+            const resultadoDiv = document.getElementById('resultado-hiper-content');
+
+            if (isNaN(peso) || peso <= 0 || isNaN(naActual) || naActual <= 145) {
+                resultadoDiv.innerHTML = `<p class="text-red-600">Por favor, ingrese un peso válido y un sodio actual mayor a 145 mEq/L.</p>`;
+                document.getElementById('resultado-hiper').classList.remove('hidden');
+                return;
+            }
+
+            const act = 0.6 * peso;
+            const deficitAguaLibre = act * ((naActual / 145) - 1);
+            
+            let tiempoCorreccion = 24;
+            if (naActual >= 158 && naActual <= 170) tiempoCorreccion = 48;
+            if (naActual > 170) tiempoCorreccion = 72;
+
+            // Holliday-Segar para NB
+            let nb;
+            if (peso <= 10) { nb = peso * 100; } 
+            else if (peso <= 20) { nb = 1000 + (peso - 10) * 50; } 
+            else { nb = 1500 + (peso - 20) * 20; }
+            
+            const volumenTotal = (deficitAguaLibre * 1000) + (nb * (tiempoCorreccion / 24));
+            const goteo = volumenTotal / tiempoCorreccion;
+
+            const htmlResult = `
+                <h4 class="font-semibold">Plan de Corrección Lenta</h4>
+                <p><strong>Déficit de Agua Libre:</strong> <span class="font-mono">${(deficitAguaLibre * 1000).toFixed(0)} ml</span></p>
+                <p><strong>Tiempo de corrección recomendado:</strong> <span class="font-mono">${tiempoCorreccion} horas</span></p>
+                <p><strong>Volumen total a infundir (Déficit + NB):</strong> <span class="font-mono">${volumenTotal.toFixed(0)} ml</span></p>
+                <p><strong>Goteo sugerido (Sol. Fisiológica 0.9% o similar):</strong> <span class="font-mono">${goteo.toFixed(1)} ml/h</span></p>
+                <p class="text-sm text-gray-600">Este plan busca disminuir el sodio no más de 10-12 mEq/L por día.</p>
+            `;
+            resultadoDiv.innerHTML = htmlResult;
+            document.getElementById('resultado-hiper').classList.remove('hidden');
+        }
+
+        // --- Lógica de Instalación ---
         let deferredPrompt;
         const installButton = document.getElementById('install-button');
         window.addEventListener('beforeinstallprompt', (e) => {
