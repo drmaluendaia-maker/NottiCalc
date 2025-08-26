@@ -106,9 +106,13 @@
                         <i data-feather="file-text" class="w-10 h-10 text-purple-600 mb-2"></i>
                         <h2 class="text-md font-semibold">Textos de Interés</h2>
                     </button>
-                    <button onclick="showPage('downloads-page')" class="main-menu-button bg-white p-4 rounded-xl shadow-md flex flex-col items-center justify-center text-center">
+                    <button onclick="showPage('apps-page')" class="main-menu-button bg-white p-4 rounded-xl shadow-md flex flex-col items-center justify-center text-center">
+                        <i data-feather="smartphone" class="w-10 h-10 text-cyan-600 mb-2"></i>
+                        <h2 class="text-md font-semibold">Apps de Interés</h2>
+                    </button>
+                    <button onclick="showPage('downloads-page')" class="main-menu-button bg-white p-4 rounded-xl shadow-md flex flex-col items-center justify-center text-center col-span-2">
                         <i data-feather="download-cloud" class="w-10 h-10 text-blue-600 mb-2"></i>
-                        <h2 class="text-md font-semibold">Descargas</h2>
+                        <h2 class="text-md font-semibold">Descargas PDF</h2>
                     </button>
                 </div>
             </div>
@@ -210,9 +214,23 @@
                 <button onclick="showPage('main-menu')" class="btn-secondary mb-4 px-4 py-2 rounded-lg flex items-center"><i data-feather="arrow-left" class="w-4 h-4 mr-2"></i> Volver</button>
                 <div class="card p-6">
                     <h2 class="text-xl font-semibold border-b pb-2">Textos de Interés</h2>
-                    <p class="text-gray-500 mt-4">Esta sección se encuentra en desarrollo. Próximamente se añadirán documentos y enlaces de interés.</p>
-                    <!-- Para agregar un nuevo texto, copia y pega esta línea y modifica el href y el texto: -->
-                    <!-- <a href="URL_DEL_DOCUMENTO" target="_blank" rel="noopener noreferrer" class="block w-full text-left bg-purple-50 p-4 rounded-lg hover:bg-purple-100 transition flex items-center"><i data-feather="file" class="w-5 h-5 mr-3 text-purple-700"></i><span>Nombre del Documento</span></a> -->
+                    <p class="text-gray-500 mt-4">Esta sección se encuentra en desarrollo.</p>
+                </div>
+            </div>
+            
+            <!-- Página de Apps de Interés -->
+            <div id="apps-page" class="page">
+                <button onclick="showPage('main-menu')" class="btn-secondary mb-4 px-4 py-2 rounded-lg flex items-center"><i data-feather="arrow-left" class="w-4 h-4 mr-2"></i> Volver</button>
+                <div class="card p-6">
+                    <h2 class="text-xl font-semibold border-b pb-2 mb-4">Apps de Interés</h2>
+                    <div class="bg-white p-4 rounded-lg border">
+                        <h3 class="font-semibold text-lg">SAP Mobile</h3>
+                        <p class="text-gray-600 text-sm mt-1 mb-4">La app oficial de la Sociedad Argentina de Pediatría. Una herramienta esencial para la evaluación del crecimiento físico y la presión arterial, utilizando curvas y referencias validadas en Argentina.</p>
+                        <div class="flex space-x-4">
+                            <a href="https://play.google.com/store/apps/details?id=ar.sap.sap_mobile" target="_blank" rel="noopener noreferrer" class="flex-1 text-center bg-gray-800 text-white py-2 px-3 rounded-lg hover:bg-black transition">Android</a>
+                            <a href="https://apps.apple.com/app/sap-mobile/id1667951018" target="_blank" rel="noopener noreferrer" class="flex-1 text-center bg-blue-500 text-white py-2 px-3 rounded-lg hover:bg-blue-600 transition">iOS</a>
+                        </div>
+                    </div>
                 </div>
             </div>
 
