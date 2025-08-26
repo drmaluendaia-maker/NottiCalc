@@ -84,6 +84,19 @@
         .tab-content.active {
             display: block;
         }
+        details > summary {
+            list-style: none;
+            cursor: pointer;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary .feather-chevron-down {
+            transition: transform 0.2s;
+        }
+        details[open] summary .feather-chevron-down {
+            transform: rotate(180deg);
+        }
     </style>
 </head>
 <body class="antialiased text-gray-800">
@@ -171,6 +184,7 @@
                             <p><strong>Flujo de Glucosa:</strong> <span id="flujo-glucosa" class="font-mono"></span> mg/kg/min</p>
                             <p><strong>Flujo de Potasio:</strong> <span id="flujo-potasio" class="font-mono"></span> mEq/kg/hora</p>
                         </div>
+                        <div id="detalles-php-content" class="mt-4"></div>
                     </div>
                 </div>
             </div>
@@ -210,6 +224,7 @@
                         <div id="resultado-hipo" class="mt-6 hidden">
                             <h3 class="font-semibold text-lg mb-2">Plan de Corrección:</h3>
                             <div id="resultado-hipo-content" class="result-card p-4 rounded-lg space-y-3"></div>
+                            <div id="detalles-hipo-content" class="mt-4"></div>
                         </div>
                     </div>
 
@@ -229,6 +244,7 @@
                         <div id="resultado-hiper" class="mt-6 hidden">
                             <h3 class="font-semibold text-lg mb-2">Plan de Corrección:</h3>
                             <div id="resultado-hiper-content" class="result-card p-4 rounded-lg space-y-3"></div>
+                            <div id="detalles-hiper-content" class="mt-4"></div>
                         </div>
                     </div>
                 </div>
@@ -340,7 +356,13 @@
         function calcularPHP() {
             const peso = parseFloat(document.getElementById('peso-php').value);
             const deshidratacion = parseFloat(document.getElementById('deshidratacion-php').value);
-            if (isNaN(peso) || peso <= 0 || isNaN(deshidratacion) || deshidratacion < 0) return;
+            const detallesDiv = document.getElementById('detalles-php-content');
+
+            if (isNaN(peso) || peso <= 0 || isNaN(deshidratacion) || deshidratacion < 0) {
+                 document.getElementById('resultado-php').classList.add('hidden');
+                 return;
+            }
+            
             let nb;
             if (peso <= 10) { nb = peso * 100; } 
             else if (peso <= 20) { nb = 1000 + (peso - 10) * 50; } 
@@ -355,6 +377,7 @@
             const mlKCl500 = (kRequeridoPorLitro / 1) / 2;
             const flujoGlucosa = (goteo * 50) / (peso * 60);
             const flujoPotasio = (goteo * (kRequeridoPorLitro / 1000)) / peso;
+            
             document.getElementById('nb-result').textContent = nb.toFixed(0);
             document.getElementById('dp-result').textContent = dp.toFixed(0);
             document.getElementById('vt-result').textContent = vt.toFixed(0);
@@ -364,7 +387,37 @@
             document.getElementById('kcl-result').textContent = mlKCl500.toFixed(1);
             document.getElementById('flujo-glucosa').textContent = flujoGlucosa.toFixed(2);
             document.getElementById('flujo-potasio').textContent = flujoPotasio.toFixed(2);
+            
+            const htmlDetalles = `
+                <details class="mt-4 border-t pt-3">
+                    <summary class="font-medium text-gray-700 flex justify-between items-center">
+                        <span>Ver Detalles del Cálculo y Clínica</span>
+                        <i data-feather="chevron-down" class="w-5 h-5 text-gray-500"></i>
+                    </summary>
+                    <div class="mt-2 text-sm text-gray-600 space-y-3">
+                        <div>
+                            <h5 class="font-semibold mb-1">1. Estimación del Grado de Deshidratación</h5>
+                            <p>El % de deshidratación se estima clínicamente. Un ${deshidratacion}% corresponde a una deshidratación <strong>${deshidratacion < 5 ? 'Leve' : (deshidratacion <= 10 ? 'Moderada' : 'Grave')}</strong>. Busque signos como sequedad de mucosas, pliegue cutáneo, ojos hundidos y relleno capilar enlentecido.</p>
+                        </div>
+                        <div>
+                            <h5 class="font-semibold mb-1">2. Desglose del Cálculo del Volumen</h5>
+                            <p><strong>- Necesidades Basales (NB):</strong> Es el líquido que el cuerpo necesita en 24h para funciones básicas. Se calcula con la fórmula de Holliday-Segar.</p>
+                            <p class="font-mono text-xs bg-gray-100 p-2 rounded">Cálculo para ${peso} kg: ${nb.toFixed(0)} ml</p>
+                            <p><strong>- Déficit Previo (DP):</strong> Es el volumen de líquido perdido que se debe reponer.</p>
+                            <p class="font-mono text-xs bg-gray-100 p-2 rounded">Cálculo: ${peso} kg * ${deshidratacion}% * 10 = ${dp.toFixed(0)} ml</p>
+                            <p><strong>- Volumen Total (VT):</strong> Es la suma de ambos componentes para las primeras 24 horas de tratamiento.</p>
+                             <p class="font-mono text-xs bg-gray-100 p-2 rounded">Cálculo: ${nb.toFixed(0)} ml (NB) + ${dp.toFixed(0)} ml (DP) = ${vt.toFixed(0)} ml</p>
+                        </div>
+                         <div>
+                            <h5 class="font-semibold mb-1">3. Composición de la Solución</h5>
+                            <p>Se utiliza una solución isotónica (Na+ 130-154 mEq/L) para prevenir la hiponatremia iatrogénica. Un aporte estándar es Na+ 140 mEq/L y K+ 20 mEq/L. El flujo de glucosa debe mantenerse entre 3-6 mg/kg/min para evitar cetosis e hipoglucemia.</p>
+                        </div>
+                    </div>
+                </details>
+            `;
+            detallesDiv.innerHTML = htmlDetalles;
             document.getElementById('resultado-php').classList.remove('hidden');
+            feather.replace();
         }
 
         function openTab(evt, tabName) {
@@ -379,56 +432,90 @@
             const naActual = parseFloat(document.getElementById('na-actual-hipo').value);
             const esSintomatico = document.getElementById('sintomatico-hipo').checked;
             const resultadoDiv = document.getElementById('resultado-hipo-content');
+            const detallesDiv = document.getElementById('detalles-hipo-content');
             
             if (isNaN(peso) || peso <= 0 || isNaN(naActual) || naActual >= 135) {
                 resultadoDiv.innerHTML = `<p class="text-red-600">Por favor, ingrese un peso válido y un sodio actual menor a 135 mEq/L.</p>`;
+                detallesDiv.innerHTML = '';
                 document.getElementById('resultado-hipo').classList.remove('hidden');
                 return;
             }
 
             let htmlResult = '';
+            let htmlDetalles = '';
+
             if (esSintomatico) {
-                const meqSodio = 2 * peso; // 1.5 a 2.5 mEq/kg -> usamos 2
-                const volClNa3 = meqSodio / 0.51; // 0.51 mEq/ml en ClNa 3%
+                const meqSodio = 2 * peso;
+                const volClNa3 = meqSodio / 0.513;
                 htmlResult = `
                     <h4 class="font-semibold text-red-700">Corrección Rápida (Sintomático)</h4>
                     <p>Administrar un bolo de <strong class="font-mono">${volClNa3.toFixed(1)} ml</strong> de Cloruro de Sodio al 3%.</p>
                     <p class="text-sm text-gray-600">Esto aportará ${meqSodio.toFixed(1)} mEq de Sodio (2 mEq/kg).</p>
                     <p class="text-sm text-gray-600">Pasar en 20-30 minutos y reevaluar.</p>
                 `;
+                htmlDetalles = `
+                    <details class="mt-4 border-t pt-3">
+                        <summary class="font-medium text-gray-700 flex justify-between items-center">
+                            <span>Ver Detalles del Cálculo y Riesgos</span>
+                            <i data-feather="chevron-down" class="w-5 h-5 text-gray-500"></i>
+                        </summary>
+                        <div class="mt-2 text-sm text-gray-600 space-y-2">
+                            <p><strong>Riesgo Principal:</strong> La hiponatremia sintomática es una emergencia por el edema cerebral. El objetivo es aumentar el Na+ lo suficiente para detener los síntomas (ej. convulsiones), no para normalizarlo.</p>
+                            <p><strong>Cálculo del Bolo:</strong> Se basa en administrar una dosis segura de soluto (1-2 mEq/kg de Sodio). Usamos 2 mEq/kg. La solución de ClNa al 3% contiene ~0.513 mEq de Na+ por ml.</p>
+                            <p class="font-mono text-xs bg-gray-100 p-2 rounded">Cálculo: (2 mEq/kg * ${peso} kg) / 0.513 mEq/ml = ${volClNa3.toFixed(1)} ml</p>
+                        </div>
+                    </details>
+                `;
             } else {
                 const naDeseado = 125;
                 const deficit = 0.6 * peso * (naDeseado - naActual);
                 if (deficit <= 0) {
                      htmlResult = `<p>El sodio actual está por encima del objetivo de corrección inicial (125 mEq/L). No se requiere corrección de déficit.</p>`;
+                     htmlDetalles = '';
                 } else {
-                    const volClNa3 = deficit / 0.51;
-                    const ritmoMaximo = 8; // mEq/L en 24h
+                    const volClNa3 = deficit / 0.513;
+                    const ritmoMaximo = 8;
                     const aumentoNecesario = naDeseado - naActual;
                     const horasInfusion = (aumentoNecesario / ritmoMaximo) * 24;
                     const goteo = volClNa3 / horasInfusion;
 
                     htmlResult = `
                         <h4 class="font-semibold">Corrección Lenta (Asintomático)</h4>
-                        <p><strong>Déficit de Sodio a corregir (hasta 125 mEq/L):</strong> <span class="font-mono">${deficit.toFixed(1)} mEq</span></p>
+                        <p><strong>Déficit de Sodio (hasta 125 mEq/L):</strong> <span class="font-mono">${deficit.toFixed(1)} mEq</span></p>
                         <p><strong>Volumen de ClNa 3% a infundir:</strong> <span class="font-mono">${volClNa3.toFixed(1)} ml</span></p>
                         <p><strong>Tiempo de infusión sugerido:</strong> <span class="font-mono">${horasInfusion.toFixed(0)} horas</span></p>
                         <p><strong>Goteo:</strong> <span class="font-mono">${goteo.toFixed(1)} ml/h</span></p>
-                        <p class="text-sm text-gray-600">Este plan aumenta el sodio a un ritmo seguro (~0.33 mEq/L/h), no superando los 8 mEq/L en 24h.</p>
+                    `;
+                    htmlDetalles = `
+                        <details class="mt-4 border-t pt-3">
+                            <summary class="font-medium text-gray-700 flex justify-between items-center">
+                                <span>Ver Detalles del Cálculo y Riesgos</span>
+                                <i data-feather="chevron-down" class="w-5 h-5 text-gray-500"></i>
+                            </summary>
+                            <div class="mt-2 text-sm text-gray-600 space-y-2">
+                                <p><strong>Riesgo Principal:</strong> Una corrección demasiado rápida puede causar <strong>Síndrome de Desmielinización Osmótica (SDO)</strong>, un daño neurológico irreversible. La regla de oro es <strong>NO</strong> aumentar el sodio más de 8-10 mEq/L en 24 horas.</p>
+                                <p><strong>Cálculo del Déficit:</strong> Se calcula la cantidad de sodio necesaria para llevar el Na+ actual a un nivel seguro (125 mEq/L) usando el Agua Corporal Total (ACT = 60% del peso).</p>
+                                <p class="font-mono text-xs bg-gray-100 p-2 rounded">Cálculo: 0.6 * ${peso} kg * (125 - ${naActual} mEq/L) = ${deficit.toFixed(1)} mEq</p>
+                            </div>
+                        </details>
                     `;
                 }
             }
             resultadoDiv.innerHTML = htmlResult;
+            detallesDiv.innerHTML = htmlDetalles;
             document.getElementById('resultado-hipo').classList.remove('hidden');
+            feather.replace();
         }
 
         function calcularHipernatremia() {
             const peso = parseFloat(document.getElementById('peso-hiper').value);
             const naActual = parseFloat(document.getElementById('na-actual-hiper').value);
             const resultadoDiv = document.getElementById('resultado-hiper-content');
+            const detallesDiv = document.getElementById('detalles-hiper-content');
 
             if (isNaN(peso) || peso <= 0 || isNaN(naActual) || naActual <= 145) {
                 resultadoDiv.innerHTML = `<p class="text-red-600">Por favor, ingrese un peso válido y un sodio actual mayor a 145 mEq/L.</p>`;
+                detallesDiv.innerHTML = '';
                 document.getElementById('resultado-hiper').classList.remove('hidden');
                 return;
             }
@@ -436,11 +523,10 @@
             const act = 0.6 * peso;
             const deficitAguaLibre = act * ((naActual / 145) - 1);
             
-            let tiempoCorreccion = 24;
-            if (naActual >= 158 && naActual <= 170) tiempoCorreccion = 48;
+            let tiempoCorreccion = 48; // Default a 48h para seguridad
+            if (naActual < 158) tiempoCorreccion = 24;
             if (naActual > 170) tiempoCorreccion = 72;
 
-            // Holliday-Segar para NB
             let nb;
             if (peso <= 10) { nb = peso * 100; } 
             else if (peso <= 20) { nb = 1000 + (peso - 10) * 50; } 
@@ -454,11 +540,27 @@
                 <p><strong>Déficit de Agua Libre:</strong> <span class="font-mono">${(deficitAguaLibre * 1000).toFixed(0)} ml</span></p>
                 <p><strong>Tiempo de corrección recomendado:</strong> <span class="font-mono">${tiempoCorreccion} horas</span></p>
                 <p><strong>Volumen total a infundir (Déficit + NB):</strong> <span class="font-mono">${volumenTotal.toFixed(0)} ml</span></p>
-                <p><strong>Goteo sugerido (Sol. Fisiológica 0.9% o similar):</strong> <span class="font-mono">${goteo.toFixed(1)} ml/h</span></p>
-                <p class="text-sm text-gray-600">Este plan busca disminuir el sodio no más de 10-12 mEq/L por día.</p>
+                <p><strong>Goteo sugerido (Sol. Hipotónica):</strong> <span class="font-mono">${goteo.toFixed(1)} ml/h</span></p>
             `;
+            const htmlDetalles = `
+                <details class="mt-4 border-t pt-3">
+                    <summary class="font-medium text-gray-700 flex justify-between items-center">
+                        <span>Ver Detalles del Cálculo y Riesgos</span>
+                        <i data-feather="chevron-down" class="w-5 h-5 text-gray-500"></i>
+                    </summary>
+                    <div class="mt-2 text-sm text-gray-600 space-y-2">
+                        <p><strong>Riesgo Principal:</strong> Una corrección demasiado rápida puede causar <strong>edema cerebral</strong>, con riesgo de convulsiones y daño neurológico. La regla de oro es <strong>NO</strong> disminuir el sodio más de 10-12 mEq/L en 24 horas (o ~0.5 mEq/L/hora).</p>
+                        <p><strong>Cálculo del Déficit de Agua Libre:</strong> Se calcula la cantidad de agua "pura" que le falta al cuerpo para diluir el sodio actual a un nivel normal (145 mEq/L), usando el Agua Corporal Total (ACT = 60% del peso).</p>
+                        <p class="font-mono text-xs bg-gray-100 p-2 rounded">Cálculo: (0.6 * ${peso} kg) * ((${naActual} / 145) - 1) = ${deficitAguaLibre.toFixed(3)} L</p>
+                        <p>El volumen total a infundir suma este déficit a las necesidades basales del paciente para el período de corrección.</p>
+                    </div>
+                </details>
+            `;
+
             resultadoDiv.innerHTML = htmlResult;
+            detallesDiv.innerHTML = htmlDetalles;
             document.getElementById('resultado-hiper').classList.remove('hidden');
+            feather.replace();
         }
 
         // --- Lógica de Instalación ---
