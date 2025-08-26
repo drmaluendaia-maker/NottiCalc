@@ -56,11 +56,11 @@
             transition: background-color 0.3s;
         }
         .btn-secondary:hover { background-color: #4b5563; }
-        .input-field {
+        .input-field, .select-field {
             border: 1px solid #d1d5db;
             transition: border-color 0.3s, box-shadow 0.3s;
         }
-        .input-field:focus {
+        .input-field:focus, .select-field:focus {
             border-color: #4f46e5;
             box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
             outline: none;
@@ -149,6 +149,7 @@
                 <div class="space-y-4">
                      <button onclick="showPage('php-calculator-page')" class="w-full text-left bg-indigo-50 p-4 rounded-lg hover:bg-indigo-100 transition">Plan de Hidratación Parenteral (PHP)</button>
                      <button onclick="showPage('disnatremias-calculator-page')" class="w-full text-left bg-indigo-50 p-4 rounded-lg hover:bg-indigo-100 transition">Corrección de Disnatremias</button>
+                     <button onclick="showPage('scores-calculator-page')" class="w-full text-left bg-indigo-50 p-4 rounded-lg hover:bg-indigo-100 transition">Scores Clínicos</button>
                 </div>
             </div>
             
@@ -194,58 +195,68 @@
                 <button onclick="showPage('calculators-page')" class="btn-secondary mb-4 px-4 py-2 rounded-lg flex items-center"><i data-feather="arrow-left" class="w-4 h-4 mr-2"></i> Volver</button>
                 <div class="card p-6">
                     <h2 class="text-xl font-semibold mb-4 border-b pb-2">Corrección de Disnatremias</h2>
-                    <!-- Tabs para Hipo/Hipernatremia -->
                     <div class="border-b border-gray-200">
                         <nav class="-mb-px flex space-x-6" aria-label="Tabs">
-                            <button onclick="openTab(event, 'hiponatremia')" id="hipo-tab-button" class="tab-button whitespace-nowrap py-3 px-1 font-medium text-sm active">Hiponatremia</button>
+                            <button onclick="openTab(event, 'hiponatremia')" class="tab-button whitespace-nowrap py-3 px-1 font-medium text-sm active">Hiponatremia</button>
                             <button onclick="openTab(event, 'hipernatremia')" class="tab-button whitespace-nowrap py-3 px-1 font-medium text-sm">Hipernatremia</button>
                         </nav>
                     </div>
 
-                    <!-- Contenido Hiponatremia -->
                     <div id="hiponatremia" class="tab-content mt-6 active">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label for="peso-hipo" class="block text-sm font-medium text-gray-700">Peso (kg)</label>
-                                <input type="number" id="peso-hipo" class="mt-1 block w-full rounded-md input-field p-2" placeholder="Ej: 10">
-                            </div>
-                            <div>
-                                <label for="na-actual-hipo" class="block text-sm font-medium text-gray-700">Sodio Actual (mEq/L)</label>
-                                <input type="number" id="na-actual-hipo" class="mt-1 block w-full rounded-md input-field p-2" placeholder="Ej: 120">
-                            </div>
+                        <!-- Contenido Hiponatremia -->
+                    </div>
+                    <div id="hipernatremia" class="tab-content mt-6">
+                         <!-- Contenido Hipernatremia -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Página de la Calculadora de Scores Clínicos -->
+            <div id="scores-calculator-page" class="page">
+                <button onclick="showPage('calculators-page')" class="btn-secondary mb-4 px-4 py-2 rounded-lg flex items-center"><i data-feather="arrow-left" class="w-4 h-4 mr-2"></i> Volver</button>
+                <div class="card p-6">
+                    <h2 class="text-xl font-semibold mb-4 border-b pb-2">Score de TAL (Dificultad Respiratoria)</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="tal-fc" class="block text-sm font-medium text-gray-700">Frecuencia Cardíaca</label>
+                            <select id="tal-fc" class="mt-1 block w-full rounded-md select-field p-2">
+                                <option value="0">&lt; 120 lpm</option>
+                                <option value="1">120-180 lpm</option>
+                                <option value="2">&gt; 180 lpm</option>
+                            </select>
                         </div>
-                        <div class="mt-4">
-                            <label class="flex items-center">
-                                <input type="checkbox" id="sintomatico-hipo" class="rounded h-4 w-4 text-indigo-600 focus:ring-indigo-500">
-                                <span class="ml-2 text-sm text-gray-600">Sintomático (convulsiones)</span>
-                            </label>
+                        <div>
+                            <label for="tal-fr" class="block text-sm font-medium text-gray-700">Frecuencia Respiratoria</label>
+                            <select id="tal-fr" class="mt-1 block w-full rounded-md select-field p-2">
+                                <option value="0">&lt; 30 rpm</option>
+                                <option value="1">31-45 rpm</option>
+                                <option value="2">46-60 rpm</option>
+                                <option value="3">&gt; 60 rpm</option>
+                            </select>
                         </div>
-                        <div class="mt-6"><button onclick="calcularHiponatremia()" class="w-full btn-primary font-bold py-2 px-4 rounded-lg">Calcular Corrección de Hiponatremia</button></div>
-                        <div id="resultado-hipo" class="mt-6 hidden">
-                            <h3 class="font-semibold text-lg mb-2">Plan de Corrección:</h3>
-                            <div id="resultado-hipo-content" class="result-card p-4 rounded-lg space-y-3"></div>
-                            <div id="detalles-hipo-content" class="mt-4"></div>
+                        <div>
+                            <label for="tal-sibilancias" class="block text-sm font-medium text-gray-700">Sibilancias</label>
+                            <select id="tal-sibilancias" class="mt-1 block w-full rounded-md select-field p-2">
+                                <option value="0">No</option>
+                                <option value="1">Final de espiración (con estetoscopio)</option>
+                                <option value="2">Toda la espiración (con estetoscopio)</option>
+                                <option value="3">Inspiración y espiración (sin estetoscopio)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="tal-musculatura" class="block text-sm font-medium text-gray-700">Uso de musculatura accesoria</label>
+                            <select id="tal-musculatura" class="mt-1 block w-full rounded-md select-field p-2">
+                                <option value="0">No</option>
+                                <option value="1">Leve (intercostal)</option>
+                                <option value="2">Moderado (tiraje subcostal, supraesternal)</option>
+                                <option value="3">Intenso (aleteo nasal)</option>
+                            </select>
                         </div>
                     </div>
-
-                    <!-- Contenido Hipernatremia -->
-                    <div id="hipernatremia" class="tab-content mt-6">
-                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label for="peso-hiper" class="block text-sm font-medium text-gray-700">Peso (kg)</label>
-                                <input type="number" id="peso-hiper" class="mt-1 block w-full rounded-md input-field p-2" placeholder="Ej: 12">
-                            </div>
-                            <div>
-                                <label for="na-actual-hiper" class="block text-sm font-medium text-gray-700">Sodio Actual (mEq/L)</label>
-                                <input type="number" id="na-actual-hiper" class="mt-1 block w-full rounded-md input-field p-2" placeholder="Ej: 165">
-                            </div>
-                        </div>
-                        <div class="mt-6"><button onclick="calcularHipernatremia()" class="w-full btn-primary font-bold py-2 px-4 rounded-lg">Calcular Corrección de Hipernatremia</button></div>
-                        <div id="resultado-hiper" class="mt-6 hidden">
-                            <h3 class="font-semibold text-lg mb-2">Plan de Corrección:</h3>
-                            <div id="resultado-hiper-content" class="result-card p-4 rounded-lg space-y-3"></div>
-                            <div id="detalles-hiper-content" class="mt-4"></div>
-                        </div>
+                    <div class="mt-6"><button onclick="calcularScoreTal()" class="w-full btn-primary font-bold py-2 px-4 rounded-lg">Calcular Score de TAL</button></div>
+                    <div id="resultado-tal" class="mt-6 hidden">
+                        <h3 class="font-semibold text-lg mb-2">Resultado:</h3>
+                        <div id="resultado-tal-content" class="result-card p-4 rounded-lg space-y-2"></div>
                     </div>
                 </div>
             </div>
@@ -561,6 +572,36 @@
             detallesDiv.innerHTML = htmlDetalles;
             document.getElementById('resultado-hiper').classList.remove('hidden');
             feather.replace();
+        }
+        
+        function calcularScoreTal() {
+            const fc = parseInt(document.getElementById('tal-fc').value);
+            const fr = parseInt(document.getElementById('tal-fr').value);
+            const sibilancias = parseInt(document.getElementById('tal-sibilancias').value);
+            const musculatura = parseInt(document.getElementById('tal-musculatura').value);
+            
+            const total = fc + fr + sibilancias + musculatura;
+            
+            let interpretacion = '';
+            let colorClass = '';
+
+            if (total <= 5) {
+                interpretacion = 'Leve (Puntaje ≤ 5)';
+                colorClass = 'text-green-700 bg-green-100';
+            } else if (total <= 9) {
+                interpretacion = 'Moderado (Puntaje 6-9)';
+                colorClass = 'text-yellow-700 bg-yellow-100';
+            } else {
+                interpretacion = 'Grave (Puntaje ≥ 10)';
+                colorClass = 'text-red-700 bg-red-100';
+            }
+
+            const resultadoDiv = document.getElementById('resultado-tal-content');
+            resultadoDiv.innerHTML = `
+                <p><strong>Puntaje Total:</strong> <span class="font-mono text-2xl font-bold">${total}</span></p>
+                <p><strong>Interpretación:</strong> <span class="font-semibold px-2 py-1 rounded-full ${colorClass}">${interpretacion}</span></p>
+            `;
+            document.getElementById('resultado-tal').classList.remove('hidden');
         }
 
         // --- Lógica de Instalación ---
